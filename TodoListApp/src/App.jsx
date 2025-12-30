@@ -4,15 +4,30 @@ function App() {
   
   const curr = new Date();
   //creating state to hold data
-  const [todo, setTodo] = useState([{task:"Gym", completed:false, dateAdded: curr.toLocaleDateString()}]);
+  const [date, setDate] = useState("");
+  const [todo, setTodo] = useState([{task:"Gym", completed:false, dueDate: date, dateAdded: curr.toLocaleDateString()}]);
   const [inputValue, setInputValue] = useState("");
+  
 
   const AddTask = () => {
     //error handling
-    if (inputValue.trim() !== "")  {
-      setTodo([...todo, {task: inputValue, completed:false, dateAdded: curr.toLocaleDateString()}]);
+    if (inputValue.trim() !== "" && date.trim() !== "")  {
+      setTodo([...todo, {task: inputValue, completed:false, dueDate: date, dateAdded: curr.toLocaleDateString()}]);
+    }
+
+    if (!inputValue)
+    {
+      alert("Please enter a task");
+      return;
+    }
+    if (!date)
+    {
+      alert("Please Enter A Due Date");
+      return;
     }
     setInputValue("");
+    setDate("");
+    
   }
 
   const DeleteTask = (item) => {
@@ -26,7 +41,8 @@ return (
   <div className="Main-Container">
     <h1>Todo List</h1>
     <div className="Input-Container">
-      <input 
+
+      Task <input 
        type="text" 
        placeholder="Enter Task" 
        required
@@ -34,6 +50,11 @@ return (
        onChange={(e) => setInputValue(e.target.value)}
        autoComplete="off">
       </input>
+      Due Date <input
+       type="date"
+       value={date}
+       onChange={(e) => setDate(e.target.value)}> 
+       </input>
       <button onClick={AddTask}>Add Task</button>
     </div>
 
@@ -42,6 +63,7 @@ return (
         return (
           <div key={index} className="Todo-Item">
             <span> Task: {item.task}</span>
+            <span> Due Date: {item.dueDate} </span>
             <span> Date Added: {item.dateAdded}</span>
             <button className="Delete-Button" onClick={() => DeleteTask(index)}> Delete </button>
           </div>
