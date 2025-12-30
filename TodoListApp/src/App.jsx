@@ -15,6 +15,12 @@ function App() {
     setInputValue("");
   }
 
+  const DeleteTask = (item) => {
+    const newTodos = [...todo];
+    newTodos.splice(item, 1);
+    setTodo(newTodos);
+  }
+
 return (
   <>
   <div className="Main-Container">
@@ -37,6 +43,7 @@ return (
           <div key={index} className="Todo-Item">
             <span> Task: {item.task}</span>
             <span> Date Added: {item.dateAdded}</span>
+            <button className="Delete-Button" onClick={() => DeleteTask(index)}> Delete </button>
           </div>
         );
       })}   
