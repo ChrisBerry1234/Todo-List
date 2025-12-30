@@ -5,14 +5,16 @@ function App() {
   const curr = new Date();
   //creating state to hold data
   const [date, setDate] = useState("");
-  const [todo, setTodo] = useState([{task:"Gym", completed:false, dueDate: date, dateAdded: curr.toLocaleDateString()}]);
+  const [todo, setTodo] = useState([{task:"Gym", completed:false, dueDate: date, dateAdded: curr.toLocaleDateString(), lists: []}]);
   const [inputValue, setInputValue] = useState("");
-  
+  const [toggle, setToggle] = useState(false);
+  const [inputList, setInputList] = useState("");
+  const [lists, setLists] = useState([]);  
 
   const AddTask = () => {
     //error handling
     if (inputValue.trim() !== "" && date.trim() !== "")  {
-      setTodo([...todo, {task: inputValue, completed:false, dueDate: date, dateAdded: curr.toLocaleDateString()}]);
+      setTodo([...todo, {task: inputValue, completed:false, dueDate: date, dateAdded: curr.toLocaleDateString(), lists: []}]);
     }
 
     if (!inputValue)
@@ -32,8 +34,12 @@ function App() {
 
   const DeleteTask = (item) => {
     const newTodos = [...todo];
-    newTodos.splice(item, 1);
+    newTodos[item].lists.push({name: "New List", tasks: []});
     setTodo(newTodos);
+  }
+
+  const SetDiv = () => {
+    setToggle(!toggle);
   }
 
 return (
@@ -65,11 +71,22 @@ return (
             <span> Task: {item.task}</span>
             <span> Due Date: {item.dueDate} </span>
             <span> Date Added: {item.dateAdded}</span>
-            <button className="Delete-Button" onClick={() => DeleteTask(index)}> Delete </button>
+            <button onClick={() => SetDiv(index)}> Add Additonal Tasks </button>
+            <button className="Delete-Button" onClick={() => DeleteTask()}> Delete </button>
+            {toggle && <div className="TodoList-List">
+              <input
+                type="text"
+                required
+                autoComplete="off"
+                value={inputList}
+                onChange={(e) => setInputList(e.target.value)}
+              ></input>
+            </div>}
           </div>
         );
       })}   
     </div>
+  
   </div>
   </>
 )};
