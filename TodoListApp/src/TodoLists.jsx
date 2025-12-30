@@ -4,11 +4,16 @@ function TodoList({ item, index, todo, setTodo }) {
     
   const [toggle, setToggle] = useState(false);
   const [inputList, setInputList] = useState("");
+  const [showLists, setshowLists] = useState(false);
 
   const DeleteTask = (item) => {
     const newTodos = [...todo];
     newTodos.splice(item, 1);
     setTodo(newTodos);
+  }
+
+  const viewLists = () => {
+    setshowLists(!showLists);
   }
 
   const SetDiv = () => {
@@ -32,7 +37,6 @@ const AddList = () => {
         return todoitem;
     })
     setTodo(newTodos);
-    console.log(newTodos);
     setInputList('');
 };
 
@@ -53,10 +57,18 @@ const AddList = () => {
                 onChange={(e) => setInputList(e.target.value)}
               ></input>
               <button onClick={AddList}>Add More</button>
-            </div>}
+            <button onClick={viewLists}>View Lists</button>
+              </div>
+            }
+              {showLists && item.lists.length > 0 && <div> {item.lists.map((listitem, index) => {
+                return (
+                    <div key={index}>
+                        {listitem}
+                    </div>
+                );
+              })}</div>}
           </div>
-
-    )
+    );
 }
 
 export default TodoList;
