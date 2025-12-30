@@ -4,7 +4,16 @@ function App() {
   
   const curr = new Date();
   //creating state to hold data
-  const [todo, setTodo] = useState([{task:"Gym", completed:false, dataAdded: curr.toLocaleDateString()}]);
+  const [todo, setTodo] = useState([{task:"Gym", completed:false, dateAdded: curr.toLocaleDateString()}]);
+  const [inputValue, setInputValue] = useState("");
+
+  const AddTask = () => {
+    //error handling
+    if (inputValue.trim() !== "")  {
+      setTodo([...todo, {task: inputValue, completed:false, dateAdded: curr.toLocaleDateString()}]);
+    }
+    setInputValue("");
+  }
 
 return (
   <>
@@ -14,7 +23,9 @@ return (
       <input 
        type="text" 
        placeholder="Enter Task" 
-       required 
+       required
+       value={inputValue}
+       onChange={(e) => setInputValue(e.target.value)}
        autoComplete="off">
       </input>
       <button onClick={AddTask}>Add Task</button>
@@ -24,8 +35,8 @@ return (
       {todo.map((item, index) => {
         return (
           <div key={index} className="Todo-Item">
-            <span>{item.task}</span>
-            <span>{item.dataAdded}</span>
+            <span> Task: {item.task}</span>
+            <span> Date Added: {item.dateAdded}</span>
           </div>
         );
       })}   
