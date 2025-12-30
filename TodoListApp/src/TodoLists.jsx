@@ -7,14 +7,36 @@ function TodoList({ item, index, todo, setTodo }) {
 
   const DeleteTask = (item) => {
     const newTodos = [...todo];
-    newTodos.slice(item, 1);
+    newTodos.splice(item, 1);
     setTodo(newTodos);
   }
 
-
-   const SetDiv = () => {
+  const SetDiv = () => {
     setToggle(!toggle);
   }
+
+const AddList = () => {
+    //NEW ARRAY TO STORE CHANGES-MAP ALLOWS US TO MAKE IMMUTABLE CHANGES
+    const newTodos = todo.map((todoitem, i) => {
+        //While Looping through Each Element, we need to also have some conditions
+        if(i === index) //INDEX IS PASSED AS PROP 
+        {
+            //ELEMENT FOUND NOW ADD MUTATION
+            return {
+                //SHALLOW COPY OF SPECIFIC TODOITEM
+                //LIST IS ANOTHER DATA STRUCTURE WE DO NOT WANT TO DIRECTLY MUTATE SO WE COPY
+                ...todoitem, lists: [...todoitem.lists, inputList ]
+            }
+        }
+        //ELSE JUST RETURN ITEM UNTOUCHED
+        return todoitem;
+    })
+    setTodo(newTodos);
+    console.log(newTodos);
+    setInputList('');
+};
+
+
     return(
         <div className="Todo-Item">
             <span> Task: {item.task}</span>
@@ -30,7 +52,7 @@ function TodoList({ item, index, todo, setTodo }) {
                 value={inputList}
                 onChange={(e) => setInputList(e.target.value)}
               ></input>
-              <button>Add More</button>
+              <button onClick={AddList}>Add More</button>
             </div>}
           </div>
 

@@ -59,7 +59,7 @@ return (
       {todo.map((item, index) => {
         return (
           //passing state as props
-          <TodoList key={index} item={item} todo={todo} setTodo={setTodo} />
+          <TodoList key={index} index={index} item={item} todo={todo} setTodo={setTodo} />
         );
       })}   
     </div>
